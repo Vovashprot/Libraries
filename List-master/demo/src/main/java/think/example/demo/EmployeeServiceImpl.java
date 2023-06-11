@@ -17,6 +17,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee add(String firstName, String lastname) {
+        check(firstName, lastname);
         Employee employee = new Employee(firstName,lastname);
         if (employeeList.size()>mapLimit){
             throw new EmployeeStorageIsFullException();
@@ -30,6 +31,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
     @Override
     public Employee remove(String firstName, String lastname) {
+        check(firstName, lastname);
         String key = (firstName+"_"+lastname).toLowerCase();
         Employee employee = employeeList.remove(key);
         if (employee == null){
@@ -40,12 +42,20 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee find(String firstName, String lastname) {
+        check(firstName, lastname);
         String key = (firstName+"_"+lastname).toLowerCase();
         Employee employee = employeeList.get(key);
         if (employee == null){
             throw new EmployeeNotFoundException();
         }
         return employee;
+    }
+    private void check(String... args){
+        for (String arg : args){
+            if (StringUtils.isAlpha(arg)){
+                throw new NotValidCharacterException();
+            }
+        }
     }
 
     @Override
