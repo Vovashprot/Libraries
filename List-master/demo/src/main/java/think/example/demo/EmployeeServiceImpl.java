@@ -32,6 +32,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Employee remove(String firstName, String lastname) {
         check(firstName, lastname);
+        StringUtils.capitalize(firstName);
+        StringUtils.capitalize(lastname);
         String key = (firstName+"_"+lastname).toLowerCase();
         Employee employee = employeeList.remove(key);
         if (employee == null){
